@@ -34,7 +34,7 @@ def parse_args():
     parser.add_argument('--logFile', default='trainValLog.txt', help='File that stores logs')
     parser.add_argument('--onGPU', default=True, type=lambda x: (str(x).lower() == 'true'), help='Run on GPU')
     parser.add_argument('--pretrained', default=True, help='Use ImageNet pre-trained weights for backbone')
-    parser.add_argument('--file_root', default="/home/LWGANet/GVLM-CD-Processed", help='Data directory root')
+    parser.add_argument('--file_root',type=str,required=True,help='Root directory of the dataset')
     args = parser.parse_args()
     print('Called with args:');
     print(args)
