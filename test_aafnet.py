@@ -12,11 +12,8 @@ import torch
 import numpy as np
 import cv2
 
-# ==============================================================================
-# 关键修复 0：兼容 tif 数据集
-# 你的 dataset_GVLM.py 会把 test_xxx.tif 拼成 test_xxx.tif.png
-# 这里拦截 cv2.imread，如果原路径读不到，就自动尝试 .tif/.tiff/.png/.jpg
-# ==============================================================================
+
+# Resolve common image-extension mismatches when loading dataset files.
 
 _original_cv2_imread = cv2.imread
 
@@ -125,9 +122,7 @@ def _safe_cv2_imread(path, flags=cv2.IMREAD_COLOR):
 
 cv2.imread = _safe_cv2_imread
 
-# ==============================================================================
-# 关键修复 1：CPU 环境自动 map_location
-# ==============================================================================
+# Load checkpoints on CPU when CUDA is unavailable.
 
 _original_torch_load = torch.load
 
@@ -171,29 +166,29 @@ def parse_args():
     )
 
     parser.add_argument(
-        "--weight",
-        default="/home/LWGANet/results/A2Net_LWGANet/L2_DSBN_GVLM_Composite/GVLM-CD-Processed/25.08.14-20.24/best_model.pth",
-        type=str,
-        help="Pretrained weight path",
+    "--weight",
+    required=True,
+    type=str,
+    help="Path to the trained model weight.",
     )
 
     parser.add_argument(
-        "--file_root",
-        default="/home/LWGANet/GVLM-CD-Processed",
-        type=str,
-        help="Data directory",
+    "--file_root",
+    required=True,
+    type=str,
+    help="Root directory of the dataset.",
     )
 
     parser.add_argument(
         "--dataset_name",
-        default="dataset_B",
+        default="GVLM-CD",
         type=str,
-        help="Dataset name used by dataset_GVLM.",
+        help="Dataset name used by the data loader.",
     )
 
     parser.add_argument(
         "--save_raw_vis",
-        default=True,
+        default=False,
         type=lambda x: str(x).lower() == "true",
         help="Save raw input images before Normalize/Scale/ToTensor.",
     )
