@@ -1,18 +1,13 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import sys
-import warnings
 
-# 抑制关于占位符的警告
-warnings.filterwarnings("ignore", category=UserWarning)
 
-# ====================== 骨干网络导入逻辑 (已设为健壮) ======================
+# LWGANet backbone import
 try:
-    sys.path.insert(0, '/home/LWGANet/models')
-    import LWGANet as RealLWGANet
+    from . import LWGANet as RealLWGANet
 
-    print("成功从 '/home/LWGANet/models/LWGANet.py' 导入真实的骨干网络模块。")
+    print("Successfully imported the LWGANet backbone.")
 
 
     class LWGANet:
